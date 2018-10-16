@@ -1,5 +1,7 @@
 Ubuntu commands:
 
+ubuntu version:
+lsb_release -a
 
 
 update:
