@@ -2,3 +2,20 @@ Ubuntu commands:
 
 
 
+update:
+sudo apt-get update
+sudo apt-get install --fix-missing
+
+install vbox:
+sudo apt install virtualbox
+
+install java jre:
+sudo apt install default-jre
+sudo apt install openjdk-11-jre-headless
+sudo apt install openjdk-8-jre-headless
+
+open jar file command:
+java -jar bur.jar
+
+executable permission to jar file:
+sudo chmod +x abc.jar
