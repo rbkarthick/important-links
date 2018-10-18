@@ -1,0 +1,5 @@
+
+
+Transfer files from ios to linux using SSH:
+    tar -pvczf BackUpDirectory.tar.gz /path/to/directory 
+    scp -P 22 root@10.42.x.xx:/var/mobile/Containers/Data/Application/BackUpDirectory.tar.gz /targetdir/
