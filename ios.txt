@@ -22,3 +22,8 @@ Transfer files from ios to linux using SSH:
     scp -P 22 root@10.42.x.xx:/var/mobile/Containers/Data/Application/BackUpDirectory.tar.gz /targetdir/
 
 
+scp root@10.x.0.77:'/var/mobile/Containers/Data/Application/F03378E2-090A-49DC-8020-12A6B64F9F43/Library/Application\ Support/app.sqlite' /home/rbk/Desktop/backup2
+
+
+
+
