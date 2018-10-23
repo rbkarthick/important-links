@@ -1,3 +1,6 @@
+Guide:
+https://www.owasp.org/index.php/OWASP_Mobile_Security_Project#tab=Mobile_Security_Testing_Guide
+
 
 
 Jailbroke
