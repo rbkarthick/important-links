@@ -24,6 +24,11 @@ Transfer files from ios to linux using SSH:
 
 scp root@10.x.0.77:'/var/mobile/Containers/Data/Application/F03378E2-090A-49DC-8020-12A6B64F9F43/Library/Application\ Support/app.sqlite' /home/rbk/Desktop/backup2
 
+Find a word recursively:
+grep -Hrn 'keyword' /home/abc/Desktop/folder/
+
+Find file extension recursively:
+find $directory -type f -name "*.in"
 
 
 
