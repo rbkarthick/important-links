@@ -2,6 +2,8 @@ meterpreter > help
 
     background                Backgrounds the current session
     info                      Displays information about a Post module
+    getsystem     Attempt to elevate your privilege to that of local system.
+    hashdump      Dumps the contents of the SAM database
     load   or use                    Load one or more meterpreter extensions
     migrate                   Migrate the server to another process
     pivot                     Manage pivot listeners
@@ -16,8 +18,7 @@ meterpreter > help
 Stdapi: System Commands
 =======================
 
-    getsystem     Attempt to elevate your privilege to that of local system.
-    hashdump      Dumps the contents of the SAM database
+
 
     drop_token    Relinquishes any active impersonation token.
     execute       Execute a command
@@ -27,7 +28,6 @@ Stdapi: System Commands
     getsid        Get the SID of the user that the server is running as
     getuid        Get the user that the server is running as
     kill          Terminate a process
-    localtime     Displays the target system's local date and time
     pgrep         Filter processes by name
     pkill         Terminate processes by name
     ps            List running processes
