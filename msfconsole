@@ -1,26 +1,9 @@
 meterpreter > help
 
-Core Commands
-=============
-
-    Command                   Description
-    -------                   -----------
-    ?                         Help menu
     background                Backgrounds the current session
-    bg                        Alias for background
-    bgkill                    Kills a background meterpreter script
-    bglist                    Lists running background scripts
-    bgrun                     Executes a meterpreter script as a background thread
-    channel                   Displays information or control active channels
-    close                     Closes a channel
-    disable_unicode_encoding  Disables encoding of unicode strings
-    enable_unicode_encoding   Enables encoding of unicode strings
     exit                      Terminate the meterpreter session
-    get_timeouts              Get the current session timeout values
     guid                      Get the session GUID
-    help                      Help menu
     info                      Displays information about a Post module
-    irb                       Open an interactive Ruby shell on the current session
     load                      Load one or more meterpreter extensions
     machine_id                Get the MSF ID of the machine attached to the session
     migrate                   Migrate the server to another process
@@ -46,7 +29,6 @@ Stdapi: File system Commands
     -------       -----------
     cat           Read the contents of a file to the screen
     cd            Change directory
-    checksum      Retrieve the checksum of a file
     cp            Copy source to destination
     dir           List files (alias for ls)
     download      Download a file or directory
@@ -87,7 +69,6 @@ Stdapi: System Commands
 
     Command       Description
     -------       -----------
-    clearev       Clear the event log
     drop_token    Relinquishes any active impersonation token.
     execute       Execute a command
     getenv        Get one or more environment variable values
@@ -100,72 +81,15 @@ Stdapi: System Commands
     pgrep         Filter processes by name
     pkill         Terminate processes by name
     ps            List running processes
-    reboot        Reboots the remote computer
     reg           Modify and interact with the remote registry
-    rev2self      Calls RevertToSelf() on the remote machine
     shell         Drop into a system command shell
-    shutdown      Shuts down the remote computer
+    
     steal_token   Attempts to steal an impersonation token from the target process
-    suspend       Suspends or resumes a list of processes
     sysinfo       Gets information about the remote system, such as OS
-
-
-Stdapi: User interface Commands
-===============================
-
-    Command        Description
-    -------        -----------
-    enumdesktops   List all accessible desktops and window stations
-    getdesktop     Get the current meterpreter desktop
-    idletime       Returns the number of seconds the remote user has been idle
     keyscan_dump   Dump the keystroke buffer
     keyscan_start  Start capturing keystrokes
     keyscan_stop   Stop capturing keystrokes
     screenshot     Grab a screenshot of the interactive desktop
-    setdesktop     Change the meterpreters current desktop
-    uictl          Control some of the user interface components
-
-
-Stdapi: Webcam Commands
-=======================
-
-    Command        Description
-    -------        -----------
-    record_mic     Record audio from the default microphone for X seconds
-    webcam_chat    Start a video chat
-    webcam_list    List webcams
-    webcam_snap    Take a snapshot from the specified webcam
-    webcam_stream  Play a video stream from the specified webcam
-
-
-Stdapi: Audio Output Commands
-=============================
-
-    Command       Description
-    -------       -----------
-    play          play an audio file on target system, nothing written on disk
-
-
-Priv: Elevate Commands
-======================
-
-    Command       Description
-    -------       -----------
     getsystem     Attempt to elevate your privilege to that of local system.
-
-
-Priv: Password database Commands
-================================
-
-    Command       Description
-    -------       -----------
     hashdump      Dumps the contents of the SAM database
-
-
-Priv: Timestomp Commands
-========================
-
-    Command       Description
-    -------       -----------
-    timestomp     Manipulate file MACE attributes
 
