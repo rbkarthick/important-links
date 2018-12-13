@@ -38,3 +38,11 @@ java -jar bur.jar
 
 executable permission to jar file:
 sudo chmod +x abc.jar
+-----------------
+to setup system proxy:
+
+export all_proxy="http://proxy-abc.americas.abc.com:8080"
+
+to unset system proxy:
+unset all_proxy
+-----------------------------
