@@ -1,5 +1,13 @@
 listeners
 --------------
-list
-info
-set Name httptest
+(Empire) > listeners
+[!] No listeners currently active 
+
+(Empire: listeners) > uselistener http
+(Empire: listeners/http) > info
+
+(Empire: listeners/http) > set Name http_emp1
+(Empire: listeners/http) > execute
+
+back
+usestager
