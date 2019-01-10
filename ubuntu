@@ -38,6 +38,9 @@ java -jar bur.jar
 
 executable permission to jar file:
 sudo chmod +x abc.jar
+
+kill process:
+sudo kill `sudo lsof -t -i:8000`
 -----------------
 to setup system proxy:
 
