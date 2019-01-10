@@ -39,3 +39,11 @@ docker run -it -p 8000:8000 mobsf
 
 http://localost:8000
 
+(if port 8000 is bind
+run the below command as root to kill all docker:
+for a in `docker ps -a -q`
+do
+  echo "Stopping container - $a"
+  docker stop $a
+done
+https://stackoverflow.com/questions/49693353/error-response-from-daemon-driver-failed-programming-external-connectivity-on-e?rq=1
