@@ -1,0 +1,4 @@
+
+
+The 'Visual C++ Project System Package' package did not load correctly.
+rmdir /q /s %LOCALAPPDATA%\Microsoft\VisualStudio\14.0\ComponentModelCache
