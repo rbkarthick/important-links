@@ -17,7 +17,9 @@ Note: no proxy; else ssl error
 
 2. Use Filza to read files/folders/apps
 
-copy files to your ubuntu
+3. copy files to your ubuntu
+step1 : Use grep command to look for your application name. You can get the application name from "mobsf" tool
+grep -Ril "SHARE test" /var/mobile/Containers/Data/Application/
 
 Transfer files from ios to linux using SSH:
     tar -pvczf BackUpDirectory.tar.gz /path/to/directory 
