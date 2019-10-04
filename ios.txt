@@ -15,7 +15,9 @@ scp App.ipa root@10.x.0.77:/var/mobile/Documents/
 go to ext3nder ; access /var/mobile/Documents/  sign and install the app
 Note: no proxy; else ssl error
 
-2. copy files to your ubuntu
+2. Use Filza to read files/folders/apps
+
+copy files to your ubuntu
 
 Transfer files from ios to linux using SSH:
     tar -pvczf BackUpDirectory.tar.gz /path/to/directory 
