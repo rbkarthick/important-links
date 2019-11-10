@@ -13,7 +13,7 @@ Network comm b/w components of PCD
 N/w segregation: b/w VM, within HMI layer, within network layer
 
 HMI:
-role segregation
+role & segregation
 
 Inter layer security:
 esc from/to layer
