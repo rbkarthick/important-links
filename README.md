@@ -27,3 +27,4 @@ https://github.com/ansjdnakjdnajkd/iOS
 
 PCI:
 https://blog.sucuri.net/2018/05/the-impacts-of-a-data-breach.html
+https://sucuri.net/guides/pci-compliance-requirements-checklist/
