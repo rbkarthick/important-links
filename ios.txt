@@ -76,9 +76,24 @@ Android Pentest:
 mine:
 /opt/genymobile/genymotion$ sudo ./genymotion
 
+Rooted android device
+1. download burp.der and change it to burp.cer
+2. transfer burp.cer
+3. Settings-> Security-> Install certificates from storages
+4. SSL pinning bypass:
 
 
 
+5. Findings:
+- Insecure Data Storage  :SQLite files, XML data stores, log files
+- Weak Server Side Controls:
+- Client Side Injection:
+- Improper Session Handling: session tokens, duration
+- Insufficient Transport Layer Protection: SSL/TLS
+- Unintended Data Leakage: Apps place sensitive data of the users in locations where it can be accessed by other applications [OS data caching, key press logging, copy/paste buffer caching]
+- Poor Authorization and Authentication: Insecurely storing auth creds 
+- Broken Cryptography: weak cryptographic algorithms, such as RC4, MD5
+- Lack of Binary Protections: Reverse engineer and insert malicious code.
 
 
 
