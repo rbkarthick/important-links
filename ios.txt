@@ -51,3 +51,36 @@ do
   docker stop $a
 done
 https://stackoverflow.com/questions/49693353/error-response-from-daemon-driver-failed-programming-external-connectivity-on-e?rq=1
+
+
+
+Android Pentest:
+
+    Download the Ubuntu installer from the Genymotion website
+    Download and install the latest Virtualbox if you haven’t already
+    Open your terminal of choice
+    Run the following commands to install and set up Genymotion
+
+  # Make the file executable
+  $ chmod +x genymotion-2.0.0_x64.bin
+
+  # Run the installer
+  $ ./genymotion-2.0.0_x64.bin
+
+  # Move the installed directory to your home folder
+  $ mv genymotion ~/.genymotion
+
+  # Add executables to your path
+  $ echo 'export PATH="/home/$USER/.genymotion:$PATH"' >> ~/.bashrc
+
+mine:
+/opt/genymobile/genymotion$ sudo ./genymotion
+
+
+
+
+
+
+
+
+
