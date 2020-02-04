@@ -97,5 +97,18 @@ Rooted android device
 
 
 
-
+X-plore
+Total Commander
+SuperSU
+SSHDroid
+SQQLite Editor
+Slides
+King Go Root
+Kingo Root
+Fake GPS
+FakeGPS Free
+ES File Explorer
+Device Info HW
+APK Extractor
+APK Installer
 
