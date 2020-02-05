@@ -112,3 +112,9 @@ Device Info HW
 APK Extractor
 APK Installer
 
+Android Jailbreak:
+1. Download SuperSU APK and zip file
+https://supersuroot.org/download/
+2. Poweroff -> PowerOn (when turning on press on the vol- down button)
+TWRP recovery environment -> Install zip 
+(Refer https://drfone.wondershare.com/root/supersu-root.html)
