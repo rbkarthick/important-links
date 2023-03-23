@@ -1,0 +1,17 @@
+SSH pub private key authentication
+
+https://www.youtube.com/watch?v=Wx7WPDnwcDg
+https://www.youtube.com/watch?v=bfwfRCCFTVI
+
+
+
+
+ssh-keygen -b 4096
+/home/jay/.ssh/id_rsa
+-rw------- id_rsa 
+-rw-r--r-- id_rsa.pub
+
+ssh-copy-id root@ipaddress
+
+/home/serverusername/.ssh/
+-rw------- authorized_keys
